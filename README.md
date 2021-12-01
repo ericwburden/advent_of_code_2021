@@ -28,7 +28,7 @@ The Julia project structure looks like this:
    |-- Benchmark.jl
 ```
 
-From the Julia project directory (`JuliaAdventOfCode`), you can:
+With the `JuliaAdventOfCode` package activated (see below):
 
 - Get the results for all days with `julia src/JuliaAdventOfCode.jl`
 - Get the benchmarks for all days with `julia bench/Benchmark.jl`
@@ -51,6 +51,17 @@ Advent of Code 2021 Results:
 Julia Advent of Code 2021 Benchmarks:
 
 - Day 01:
-|-- Part 01:  0.000014 seconds (5 allocations: 20.312 KiB)
-|-- Part 02:  0.000042 seconds (8 allocations: 114.203 KiB)
+|-- Part 01:  2.897 μs (5 allocations: 20.31 KiB)
+|-- Part 02:  28.081 μs (8 allocations: 114.20 KiB)
+```
+
+**Note on Julia project activation**
+
+To conveniently use the commands listed above, add the following to your `/.julia/config/startup.jl`:
+
+```julia
+using Pkg
+if isfile("Project.toml") && isfile("Manifest.toml")
+    Pkg.activate(".")
+end
 ```

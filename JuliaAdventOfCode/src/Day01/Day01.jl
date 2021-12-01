@@ -3,11 +3,9 @@ module Day01
 include("Part01.jl")
 include("Part02.jl")
 
-stripsplit(x, sep) = split(strip(x), sep)
 inputpath = normpath(joinpath(@__FILE__,"..","..","..","inputs"))
 input = open("$inputpath/Day01/Input01.txt") do f
-    s = read(f, String)
-    [parse(Int, d) for d in stripsplit(s, "\n")]
+    [parse(Int, s) for s in readlines(f)]
 end
 
 answer1 = part1(input)
