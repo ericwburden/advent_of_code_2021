@@ -20,7 +20,7 @@ though, there's just `JuliaAdventOfCode`.
 The Julia project structure looks like this:
 
 ```
-JuliaAdvventOfCode
+JuliaAdventOfCode
 ├─inputs
 │ └─DayXX
 │   ├─Input01.txt
