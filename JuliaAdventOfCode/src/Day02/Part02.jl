@@ -22,9 +22,7 @@ end
 
 function part2_strategy1(input)
     position = Position2(0)
-    for direction in input
-        move!(position, direction)
-    end
+    foreach(x -> move!(position, x), input)
     position.horizontal * position.depth
 end
 
@@ -48,10 +46,7 @@ end
 
 
 function part2_strategy2(input)
-    position = (0, 0, 0)
-    for direction in input
-        position = move(position, direction)
-    end
+    position = foldl(move, input, init = (0, 0, 0))
     position[1] * position[2]
 end
 

@@ -2,11 +2,11 @@ module Day02
 
 abstract type AbstractDirection end
 
-struct Forward mag::Integer end
-struct Down    mag::Integer end
-struct Up      mag::Integer end
+struct Forward <: AbstractDirection mag::Integer end
+struct Down    <: AbstractDirection mag::Integer end
+struct Up      <: AbstractDirection mag::Integer end
 
-function todirection(s::AbstractString)
+function todirection(s::AbstractString)::AbstractDirection
     (dirstr, magstr) = split(s)
     mag = parse(Int, magstr)
     dirstr == "forward" && return Forward(mag)
