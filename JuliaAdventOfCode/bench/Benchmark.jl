@@ -53,7 +53,7 @@ if day == 0 || day == 2
     @btime Day02.part1_strategy2(Day02.input)
 
     print("│  └─ Strategy 03:")
-    @btime Day02.part1_strategy3(Day02.inputpath)
+    @btime Day02.part1_strategy3(Day02.input)
 
     # Part 2
     println("└─ Part 02:")
@@ -65,7 +65,7 @@ if day == 0 || day == 2
     @btime Day02.part2_strategy2(Day02.input)
 
     print("   └─ Strategy 03:")
-    @btime Day02.part2_strategy3(Day02.inputpath)
+    @btime Day02.part2_strategy3(Day02.input)
 end
 
 
