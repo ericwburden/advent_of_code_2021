@@ -2,7 +2,7 @@
 
 ## The Blog
 
-I've blogged my approaches to the R version of each solution here: 
+I've blogged my approaches to the Julia version of each solution here: 
 [Advent of Code Blog](https://www.ericburden.work/categories/advent-of-code-2021/). 
 Each one includes not only the code but some commentary on the thinking behind the 
 approach and my thoughts about the puzzles in general.
