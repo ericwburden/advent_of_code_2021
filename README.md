@@ -23,8 +23,8 @@ The Julia project structure looks like this:
 JuliaAdventOfCode
 ├─inputs
 │ └─DayXX
-│   ├─Input01.txt
-│   └─Input02.txt
+│   ├─input.txt
+│   └─test.txt
 ├─src
 │ ├─DayXX
 │ │ ├─DayXX.jl
