@@ -31,8 +31,10 @@ JuliaAdventOfCode
 │ │ ├─Part01.jl
 │ │ └─Part02.jl
 │ └─JuliaAdventOfCode.jl
-└─bench
-  └─Benchmark.jl
+├─bench
+│ └─Benchmark.jl
+├─Manifest.toml
+└─Project.toml
 ```
 
 With the `JuliaAdventOfCode` package activated (see below):
