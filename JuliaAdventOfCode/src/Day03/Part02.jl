@@ -28,5 +28,5 @@ find_co2_scrubber_rating(x)     = find_first_match(x, !mostcommon)
 function part2(input)
     oxygen_generator_rating = find_oxygen_generator_rating(input)
     co2_scrubber_rating = find_co2_scrubber_rating(input)
-    toint(oxygen_generator_rating) * toint(co2_scrubber_rating)
+    convert(Int, oxygen_generator_rating) * convert(Int, co2_scrubber_rating)
 end

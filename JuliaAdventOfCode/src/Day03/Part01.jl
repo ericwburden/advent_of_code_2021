@@ -6,13 +6,13 @@ function mostcommon(arr)::Bool
 end
 
 # Convert a Boolean vector into a decimal number
-function toint(arr::BitVector)
+function convert(t::Type{Int}, bv::BitVector)
     # Generate a vector of the powers of 2 represented in
     # the BitVector.
     (powers
-        = (length(arr)-1:-1:0)
+        =  (length(bv)-1:-1:0)
         |> collect
-        |> (x -> x[arr]))
+        |> (x -> x[bv]))
 
     # Raise 2 to each of the powers and sum the result
     sum(2 .^ powers)
@@ -31,5 +31,5 @@ function part1(input)
     # is just the inverse of `gamma`.
     epsilon = .!gamma
 
-    toint(gamma) * toint(epsilon)
+    convert(Int, gamma) * convert(Int, epsilon)
 end
