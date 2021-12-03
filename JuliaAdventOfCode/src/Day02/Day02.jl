@@ -16,7 +16,7 @@ function todirection(s::AbstractString)::AbstractDirection
 end
 
 inputdir = normpath(joinpath(@__FILE__,"..","..","..","inputs"))
-inputpath = joinpath(inputdir, "Day02", "Input01.txt")
+inputpath = joinpath(inputdir, "Day02", "input.txt")
 input = open(inputpath) do f
     [todirection(s) for s in readlines(f)]
 end
