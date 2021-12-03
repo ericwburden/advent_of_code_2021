@@ -3,7 +3,7 @@
 # `discriminator` is satisfied. Repeat until only one row remains and 
 # return that row as a BitVector
 function find_first_match(input, discriminator)
-    mask = fill(true, size(input, 1))
+    mask = trues(size(input, 1))
     for col in eachcol(input)
         common_value = discriminator(col[mask])
 
