@@ -1,8 +1,6 @@
 module Day03
 
-function process(s::AbstractString)::Vector{Bool}
-    split(s, "") .== "1"
-end
+process(s::AbstractString)::Vector{Bool} = split(s, "") .== "1"
 
 inputdir = normpath(joinpath(@__FILE__,"..","..","..","inputs"))
 inputpath = joinpath(inputdir, "Day03", "input.txt")
