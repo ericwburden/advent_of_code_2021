@@ -83,6 +83,21 @@ if day == 0 || day == 3
 end
 
 
+# Day 04 ----------------------------------------------------------------------
+
+if day == 0 || day == 4
+    include("$srcpath/Day04/Day04.jl")
+    println("\nDay 04:")
+
+    print("├─ Part 01:")
+    boardscopy = deepcopy(Day04.boards)
+    @btime Day04.part1(Day04.numbers, boardscopy)
+
+    print("└─ Part 02:")
+    @btime Day04.part2(Day04.numbers, Day04.boards)
+end
+
+
 # End -------------------------------------------------------------------------
 
 println()
