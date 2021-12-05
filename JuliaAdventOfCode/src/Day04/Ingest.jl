@@ -1,4 +1,8 @@
-@enum LineType ltrow ltcol
+# Used to indicate whether a given line index is for a row
+# or a column
+abstract type AbstractIndexType end
+struct RowIndex <: AbstractIndexType idx::Int end
+struct ColIndex <: AbstractIndexType idx::Int end
 
 # A struct to represent the state of an individual bingo board
 # Contains fields for:
@@ -8,15 +12,15 @@
 # - found:      A mask for `numbers` to indicate which board numbers
 #               have been called
 # - linecounts: A Dict used to determine when a full column or row
-#               has been drawn. The keys are a tuple of a row/column
-#               index and an enum value indicating whether the index
-#               is for a row or column. The values are the count of 
-#               numbers in that row/column that have been drawn.
+#               has been drawn. The keys are an AbstractIndexType
+#               indicating the line(s) of the number on the board.
+#               The values are the count of numbers in that
+#               row/column that have been drawn.
 mutable struct Board
     indexmap::Dict{Int, Int}
     numbers::Matrix{Int}
     found::BitMatrix
-    linecounts::Dict{Tuple{LineType, Int}, Int}
+    linecounts::Dict{AbstractIndexType, Int}
 end
 
 # Constructor for a `Board`, generates the other fields from `numbers`
@@ -46,7 +50,7 @@ function play!(number::Int, board::Board)::Bool
 
     (row, col) = Tuple(CartesianIndices(board.numbers)[idx])
     boardwins = false
-    linecountkeys = [(ltrow, row), (ltcol, col)]
+    linecountkeys = [RowIndex(row), ColIndex(col)]
     for key in linecountkeys
         linecount = get(board.linecounts, key, 0)
         board.linecounts[key] = linecount + 1
