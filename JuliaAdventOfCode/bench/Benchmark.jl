@@ -1,5 +1,5 @@
-using BenchmarkTools
 using ArgParse
+using BenchmarkTools
 
 
 # ArgParse Settings -----------------------------------------------------------
@@ -104,9 +104,19 @@ if day == 0 || day == 5
     include("$srcpath/Day05/Day05.jl")
     println("\nDay 05:")
 
-    print("├─ Part 01:")
-    @btime Day05.part1(Day05.input)
+    # Part 1
+    println("├─ Part 01:")
 
+    print("│  ├─ Strategy 01:")
+    @btime Day05.part1_strategy1(Day05.input)
+
+    print("│  ├─ Strategy 02:")
+    @btime Day05.part1_strategy2(Day05.input)
+
+    print("│  └─ Strategy 03:")
+    @btime Day05.part1_strategy3(Day05.input)
+
+    # Part 2
     print("└─ Part 02:")
     @btime Day05.part2(Day05.input)
 end
