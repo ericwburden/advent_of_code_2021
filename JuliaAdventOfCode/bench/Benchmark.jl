@@ -98,6 +98,20 @@ if day == 0 || day == 4
 end
 
 
+# Day 05 ----------------------------------------------------------------------
+
+if day == 0 || day == 5
+    include("$srcpath/Day05/Day05.jl")
+    println("\nDay 05:")
+
+    print("├─ Part 01:")
+    @btime Day05.part1(Day05.input)
+
+    print("└─ Part 02:")
+    @btime Day05.part2(Day05.input)
+end
+
+
 # End -------------------------------------------------------------------------
 
 println()
