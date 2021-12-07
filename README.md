@@ -42,6 +42,8 @@ With the `JuliaAdventOfCode` package activated (see below):
 - Get the results for all days with `julia src/JuliaAdventOfCode.jl`
 - Get the benchmarks for all days with `julia bench/Benchmark.jl`
 - Get the benchmarks for a single day with `julia bench/Benchmark.jl -d 1`
+- Run the tests with `julia test/runtests.jl` from the terminal
+    - Alternatively, you can run the tests in the REPL in [Pkg mode](https://pkgdocs.julialang.org/v1/repl/#repl-test)
 
 For Day 1, that looks like:
 
