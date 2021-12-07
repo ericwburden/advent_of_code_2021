@@ -56,4 +56,13 @@ println("\nDay 06")
 println("├─ Part 01: $(Day06.answer1)")
 println("└─ Part 02: $(Day06.answer2)")
 
+
+# Day 07 ----------------------------------------------------------------------
+
+include("Day07/Day07.jl")
+
+println("\nDay 07")
+println("├─ Part 01: $(Day07.answer1)")
+println("└─ Part 02: $(Day07.answer2)")
+
 end # module

@@ -136,6 +136,20 @@ if day == 0 || day == 6
 end
 
 
+# Day 07 ----------------------------------------------------------------------
+
+if day == 0 || day == 7
+    include("$srcpath/Day07/Day07.jl")
+    println("\nDay 07:")
+
+    print("├─ Part 01:")
+    @btime Day07.part1(Day07.input)
+
+    print("└─ Part 02:")
+    @btime Day07.part2(Day07.input)
+end
+
+
 # End -------------------------------------------------------------------------
 
 println()
