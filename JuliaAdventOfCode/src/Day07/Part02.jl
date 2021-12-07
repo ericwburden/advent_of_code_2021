@@ -44,5 +44,9 @@ function part2(input)
         position += step
         nextdist = crabdistance(position)
     end
+
+    # NOTE: For my input, the above loop never runs because the actual position
+    # turned out to be one to the right of my starting position. Your mileage 
+    # may vary.
     return currentmin
 end
