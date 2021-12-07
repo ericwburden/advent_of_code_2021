@@ -1,5 +1,6 @@
 using ArgParse
 using BenchmarkTools
+using JuliaAdventOfCode
 
 
 # ArgParse Settings -----------------------------------------------------------
@@ -26,7 +27,6 @@ println("\nJulia Advent of Code 2021 Benchmarks:")
 # Day 01 ----------------------------------------------------------------------
 
 if day == 0 || day == 1
-    include("$srcpath/Day01/Day01.jl")
     println("\nDay 01:")
 
     print("├─ Part 01:")
@@ -40,7 +40,6 @@ end
 # Day 02 ----------------------------------------------------------------------
 
 if day == 0 || day == 2
-    include("$srcpath/Day02/Day02.jl")
     println("\nDay 02:")
 
     # Part 1
@@ -72,7 +71,6 @@ end
 # Day 03 ----------------------------------------------------------------------
 
 if day == 0 || day == 3
-    include("$srcpath/Day03/Day03.jl")
     println("\nDay 03:")
 
     print("├─ Part 01:")

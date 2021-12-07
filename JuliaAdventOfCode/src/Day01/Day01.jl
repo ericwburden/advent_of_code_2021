@@ -1,14 +1,15 @@
 module Day01
+using ..JuliaAdventOfCode: getinput
+
+
+include("Ingest.jl")
+inputpath = getinput("Day01", "input")
+input = ingest(inputpath)
 
 include("Part01.jl")
-include("Part02.jl")
-
-inputpath = normpath(joinpath(@__FILE__,"..","..","..","inputs"))
-input = open("$inputpath/Day01/input.txt") do f
-    [parse(Int, s) for s in readlines(f)]
-end
-
 answer1 = part1(input)
+
+include("Part02.jl")
 answer2 = part2(input)
 
 end # module
