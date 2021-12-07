@@ -1,5 +1,5 @@
 using Test
 
-include("Day01/Day01Tests.jl")
-include("Day02/Day02Tests.jl")
-include("Day03/Day03Tests.jl")
+include("Day01Tests.jl")
+include("Day02Tests.jl")
+include("Day03Tests.jl")
