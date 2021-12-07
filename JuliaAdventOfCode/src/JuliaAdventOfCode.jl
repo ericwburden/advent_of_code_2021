@@ -40,6 +40,7 @@ println("└─ Part 02: $(Day03.answer2)")
 # Day 04 ----------------------------------------------------------------------
 
 include("Day04/Day04.jl")
+export Day04
 
 println("\nDay 04")
 println("├─ Part 01: $(Day04.answer1)")
@@ -49,6 +50,7 @@ println("└─ Part 02: $(Day04.answer2)")
 # Day 05 ----------------------------------------------------------------------
 
 include("Day05/Day05.jl")
+export Day05
 
 println("\nDay 05")
 println("├─ Part 01: $(Day05.answer1)")
@@ -58,6 +60,7 @@ println("└─ Part 02: $(Day05.answer2)")
 # Day 06 ----------------------------------------------------------------------
 
 include("Day06/Day06.jl")
+export Day06
 
 println("\nDay 06")
 println("├─ Part 01: $(Day06.answer1)")
@@ -67,6 +70,7 @@ println("└─ Part 02: $(Day06.answer2)")
 # Day 07 ----------------------------------------------------------------------
 
 include("Day07/Day07.jl")
+export Day07
 
 println("\nDay 07")
 println("├─ Part 01: $(Day07.answer1)")

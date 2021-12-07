@@ -1,5 +1,3 @@
-using ..JuliaAdventOfCode: getinput
-
 process(s::AbstractString)::Vector{Bool} = split(s, "") .== "1"
 
 function ingest(path)

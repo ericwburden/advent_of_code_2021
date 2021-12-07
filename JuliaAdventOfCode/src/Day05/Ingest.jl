@@ -80,7 +80,7 @@ end
 
 # Read input from a file path
 function ingest(path)
-    open(inputpath) do f
+    open(path) do f
         [Line(s) for s in readlines(f)]
     end
 end

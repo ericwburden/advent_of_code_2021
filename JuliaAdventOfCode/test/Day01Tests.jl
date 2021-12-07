@@ -8,6 +8,6 @@ using JuliaAdventOfCode: getinput, Day01
 
     realinputpath = getinput("Day01", "input")
     realinput = Day01.ingest(realinputpath)
-    @test Day01.part1(realinput) == 1583
-    @test Day01.part2(realinput) == 1627
+    @test Day01.part1(realinput) == 1_583
+    @test Day01.part2(realinput) == 1_627
 end

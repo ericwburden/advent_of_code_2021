@@ -1,5 +1,3 @@
-using ..JuliaAdventOfCode: getinput
-
 abstract type AbstractDirection end
 
 struct Forward <: AbstractDirection mag::Integer end

@@ -8,7 +8,7 @@ function part1_strategy1(input)
         (isvertical(line) || ishorizontal(line)) || continue
         points = collect(line)
         for (x, y) in points
-            pointsmap[x, y] += 1
+            pointsmap[x + 1, y + 1] += 1
         end
     end
 
@@ -49,10 +49,10 @@ function part1_strategy3(input)
         (isvertical(line) || ishorizontal(line)) || continue
         points = collect(line)
         for (x, y) in points
-            if pointsmap[x, y] > 0
-                pointsmap[x, y] = 2
+            if pointsmap[x + 1, y + 1] > 0
+                pointsmap[x + 1, y + 1] = 2
             else
-                pointsmap[x, y] = 1
+                pointsmap[x + 1, y + 1] = 1
             end
         end
     end

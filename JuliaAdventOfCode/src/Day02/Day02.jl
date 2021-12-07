@@ -1,4 +1,5 @@
 module Day02
+using ..JuliaAdventOfCode: getinput
 
 include("Ingest.jl")
 inputpath = getinput("Day02", "input")

@@ -1,8 +1,8 @@
 module Day07
+using ..JuliaAdventOfCode: getinput
 
 include("Ingest.jl")
-inputdir = normpath(joinpath(@__FILE__,"..","..","..","inputs"))
-inputpath = joinpath(inputdir, "Day07", "input.txt")
+inputpath = getinput("Day07", "input")
 input = ingest(inputpath)
 
 include("Part01.jl")

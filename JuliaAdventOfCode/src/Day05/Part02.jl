@@ -5,7 +5,7 @@ function part2(input)
     for line in input
         points = collect(line)
         for (x, y) in points
-            pointsmap[x, y] += 1
+            pointsmap[x + 1, y + 1] += 1
         end
     end
 

@@ -19,10 +19,7 @@ day = parsed_args["day"]
 
 # Benchmarking Setup ----------------------------------------------------------
 
-srcpath = normpath(joinpath(@__FILE__,"..","..","src"))
-
 println("\nJulia Advent of Code 2021 Benchmarks:")
-
 
 # Day 01 ----------------------------------------------------------------------
 
@@ -84,7 +81,6 @@ end
 # Day 04 ----------------------------------------------------------------------
 
 if day == 0 || day == 4
-    include("$srcpath/Day04/Day04.jl")
     println("\nDay 04:")
 
     print("├─ Part 01:")
@@ -99,7 +95,6 @@ end
 # Day 05 ----------------------------------------------------------------------
 
 if day == 0 || day == 5
-    include("$srcpath/Day05/Day05.jl")
     println("\nDay 05:")
 
     # Part 1
@@ -123,7 +118,6 @@ end
 # Day 06 ----------------------------------------------------------------------
 
 if day == 0 || day == 6
-    include("$srcpath/Day06/Day06.jl")
     println("\nDay 06:")
 
     print("├─ Part 01:")
@@ -137,7 +131,6 @@ end
 # Day 07 ----------------------------------------------------------------------
 
 if day == 0 || day == 7
-    include("$srcpath/Day07/Day07.jl")
     println("\nDay 07:")
 
     print("├─ Part 01:")

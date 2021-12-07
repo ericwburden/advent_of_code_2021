@@ -62,7 +62,7 @@ end
 
 # Read in an parse the contents of the input file
 function ingest(path)
-    open(inputpath) do f
+    open(path) do f
         # Read the first line of numbers and parse into 
         # an array of Ints
         numstr = readuntil(f, "\n\n")

@@ -1,5 +1,5 @@
 function ingest(path)
-    fish = open(inputpath) do f
+    fish = open(path) do f
         readsplit(x) = split(readchomp(x), ",")
         [parse(Int, s) for s in readsplit(f)]
     end

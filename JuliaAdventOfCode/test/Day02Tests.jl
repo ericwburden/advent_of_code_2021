@@ -14,8 +14,8 @@ using JuliaAdventOfCode: getinput, Day02
 
     realinputpath = getinput("Day02", "input")
     realinput = Day02.ingest(realinputpath)
-    part1_real_answer = 1804520
-    part2_real_answer = 1971095320
+    part1_real_answer = 1_804_520
+    part2_real_answer = 1_971_095_320
     @test Day02.part1_strategy1(realinput) == part1_real_answer
     @test Day02.part1_strategy2(realinput) == part1_real_answer
     @test Day02.part1_strategy3(realinput) == part1_real_answer
