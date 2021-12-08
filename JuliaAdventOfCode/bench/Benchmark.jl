@@ -141,6 +141,22 @@ if day == 0 || day == 7
 end
 
 
+# Day 08 ----------------------------------------------------------------------
+
+if day == 0 || day == 8
+    println("\nDay 08:")
+
+    print("├─ Input Parsing:")
+    @btime Day08.ingest(Day08.inputpath)
+
+    print("├─ Part 01:")
+    @btime Day08.part1(Day08.input)
+
+    print("└─ Part 02:")
+    @btime Day08.part2(Day08.input)
+end
+
+
 # End -------------------------------------------------------------------------
 
 println()
