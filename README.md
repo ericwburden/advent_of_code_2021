@@ -52,7 +52,7 @@ With the `JuliaAdventOfCode` package activated (see below):
 For Day 1, that looks like:
 
 ```
-❯ julia src/JuliaAdventOfCode.jl
+❯ julia src/RunAll.jl -d 1
 
 Advent of Code 2021 Results:
 
@@ -62,7 +62,7 @@ Day 01
 ```
 
 ```
-❯ julia bench/Benchmark.jl -d 1
+❯ julia src/Benchmark.jl -d 1
 
 Julia Advent of Code 2021 Benchmarks:
 
