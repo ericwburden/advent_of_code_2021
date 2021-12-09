@@ -3,97 +3,19 @@ module JuliaAdventOfCode
 inputdirpath = normpath(joinpath(@__FILE__,"..","..","inputs"))
 getinput(d, fn) = joinpath(inputdirpath, d, "$fn.txt")
 export getinput
+export Day01, Day02, Day03, Day04, Day05, 
+       Day06, Day07, Day08, Day09
 
-println("\nAdvent of Code 2021 Results:")
+# Include every test file in this folder
+dayfilere = r"Day0\d/Day0\d.jl$"
 
-
-# Day 01 ----------------------------------------------------------------------
-
-include("Day01/Day01.jl")
-export Day01
-
-println("\nDay 01")
-println("├─ Part 01: $(Day01.answer1)")
-println("└─ Part 02: $(Day01.answer2)")
-
-
-# Day 02 ----------------------------------------------------------------------
-
-include("Day02/Day02.jl")
-export Day02
-
-println("\nDay 02")
-println("├─ Part 01: $(Day02.answer1)")
-println("└─ Part 02: $(Day02.answer2)")
-
-
-# Day 03 ----------------------------------------------------------------------
-
-include("Day03/Day03.jl")
-export Day03
-
-println("\nDay 03")
-println("├─ Part 01: $(Day03.answer1)")
-println("└─ Part 02: $(Day03.answer2)")
-
-
-# Day 04 ----------------------------------------------------------------------
-
-include("Day04/Day04.jl")
-export Day04
-
-println("\nDay 04")
-println("├─ Part 01: $(Day04.answer1)")
-println("└─ Part 02: $(Day04.answer2)")
-
-
-# Day 05 ----------------------------------------------------------------------
-
-include("Day05/Day05.jl")
-export Day05
-
-println("\nDay 05")
-println("├─ Part 01: $(Day05.answer1)")
-println("└─ Part 02: $(Day05.answer2)")
-
-
-# Day 06 ----------------------------------------------------------------------
-
-include("Day06/Day06.jl")
-export Day06
-
-println("\nDay 06")
-println("├─ Part 01: $(Day06.answer1)")
-println("└─ Part 02: $(Day06.answer2)")
-
-
-# Day 07 ----------------------------------------------------------------------
-
-include("Day07/Day07.jl")
-export Day07
-
-println("\nDay 07")
-println("├─ Part 01: $(Day07.answer1)")
-println("└─ Part 02: $(Day07.answer2)")
-
-
-# Day 08 ----------------------------------------------------------------------
-
-include("Day08/Day08.jl")
-export Day08
-
-println("\nDay 08")
-println("├─ Part 01: $(Day08.answer1)")
-println("└─ Part 02: $(Day08.answer2)")
-
-
-# Day 09 ----------------------------------------------------------------------
-
-include("Day09/Day09.jl")
-export Day09
-
-println("\nDay 09")
-println("├─ Part 01: $(Day09.answer1)")
-println("└─ Part 02: $(Day09.answer2)")
+for (root, dirs, files) in walkdir(@__DIR__)
+    for file in files
+        filepath = joinpath(root, file)
+        if occursin(dayfilere, filepath)
+            include(filepath)
+        end
+    end
+end
 
 end # module
