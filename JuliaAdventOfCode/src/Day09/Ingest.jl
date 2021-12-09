@@ -2,7 +2,7 @@ function ingest(path)
     outvectors = open(path) do f
         [split(line, "") for line in readlines(f)]
     end
-    toint(x) = parse(Int, x)
+    toint(x) = parse(Int8, x)
     (outmatrix
      =  outvectors
      |> (x -> reduce(hcat, x))

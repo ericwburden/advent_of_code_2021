@@ -1,4 +1,4 @@
-function neighborindices(matrix::Matrix, idx::CartesianIndex)::Vector{CartesianIndex}
+function neighborindices(matrix::AbstractMatrix, idx::CartesianIndex)::Vector{CartesianIndex}
     out = []
     (rows, cols) = size(matrix)
     if idx[1] > 1;    push!(out, idx - CartesianIndex(1, 0)); end
@@ -8,7 +8,7 @@ function neighborindices(matrix::Matrix, idx::CartesianIndex)::Vector{CartesianI
     return out
 end
 
-function basinat(pointmap::Matrix{Int}, idx::CartesianIndex)::Int
+function basinsizeat(pointmap::BitMatrix, idx::CartesianIndex)::Int
     queue = [idx]
     visited = Set(queue)
     cells = 1
@@ -17,7 +17,7 @@ function basinat(pointmap::Matrix{Int}, idx::CartesianIndex)::Int
         for neighbor in neighborindices(pointmap, location)
             neighbor in visited && continue
             push!(visited, neighbor)
-            if pointmap[neighbor] < 9
+            if pointmap[neighbor]
                 pushfirst!(queue, neighbor)
                 cells += 1
             end
@@ -28,11 +28,11 @@ end
 
 function part2(input)
     lowpoints = findlowpoints(input)
-    basins = []
-    for (index, point) in pairs(IndexCartesian(), lowpoints)
-        !point && continue
-        push!(basins, basinat(input, index))
+    basins = input .< 9
+    basinsizes = []; sizehint!(basinsizes, sum(lowpoints))
+    for index in findall(lowpoints)
+        push!(basinsizes, basinsizeat(basins, index))
     end
-    sort!(basins, rev = true)
-    return prod(basins[1:3])
+    sort!(basinsizes, rev = true)
+    return prod(basinsizes[1:3])
 end
