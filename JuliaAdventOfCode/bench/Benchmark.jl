@@ -146,14 +146,24 @@ end
 if day == 0 || day == 8
     println("\nDay 08:")
 
-    print("├─ Input Parsing:")
-    @btime Day08.ingest(Day08.inputpath)
-
     print("├─ Part 01:")
     @btime Day08.part1(Day08.input)
 
     print("└─ Part 02:")
     @btime Day08.part2(Day08.input)
+end
+
+
+# Day 09 ----------------------------------------------------------------------
+
+if day == 0 || day == 9
+    println("\nDay 09:")
+
+    print("├─ Part 01:")
+    @btime Day09.part1(Day09.input)
+
+    print("└─ Part 02:")
+    @btime Day09.part2(Day09.input)
 end
 
 
