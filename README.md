@@ -30,9 +30,12 @@ JuliaAdventOfCode
 │ │ ├─DayXX.jl
 │ │ ├─Part01.jl
 │ │ └─Part02.jl
-│ └─JuliaAdventOfCode.jl
-├─bench
-│ └─Benchmark.jl
+│ ├─Benchmark.jl
+│ ├─JuliaAdventOfCode.jl
+│ └─RunAll.jl
+├─tests
+│ ├─DayXXTests.jl
+│ └─runtests.jl
 ├─Manifest.toml
 └─Project.toml
 ```
@@ -42,7 +45,7 @@ With the `JuliaAdventOfCode` package activated (see below):
 - Get the results for all days with `julia src/RunAll.jl`
 - Get the results for a single day with `julia src/RunAll.jl -d 1`
 - Get the benchmarks for all days with `julia src/Benchmark.jl`
-- Get the benchmarks for a single day with `julia bench/Benchmark.jl -d 1`
+- Get the benchmarks for a single day with `julia src/Benchmark.jl -d 1`
 - Run the tests with `julia test/runtests.jl` from the terminal
     - Alternatively, you can run the tests in the REPL in [Pkg mode](https://pkgdocs.julialang.org/v1/repl/#repl-test)
 
