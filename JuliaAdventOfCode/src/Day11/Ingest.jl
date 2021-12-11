@@ -1,7 +1,3 @@
-# Today's input is essentially a big block of numbers (0-9).
-# Ingest it by reading each line, breaking it into characters,
-# storing all the character vectors in a big vector, then 
-# converting the 2D vector into a Matrix{Int}
 function ingest(path)
     outvectors = open(path) do f
         [collect(line) for line in readlines(f)]

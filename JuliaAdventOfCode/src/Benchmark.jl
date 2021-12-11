@@ -193,6 +193,7 @@ if day == 0 || day == 9
     @btime Day09.part2(input)
 end
 
+
 # Day 10 ----------------------------------------------------------------------
 
 if day == 0 || day == 10
@@ -206,6 +207,22 @@ if day == 0 || day == 10
 
     print("└─ Part 02:")
     @btime Day10.part2(input)
+end
+
+
+# Day 11 ----------------------------------------------------------------------
+
+if day == 0 || day == 11
+    inputpath = getinput("Day11", "input")
+    input = Day11.ingest(inputpath)
+
+    println("\nDay 11:")
+
+    print("├─ Part 01:")
+    @btime Day11.part1(input)
+
+    print("└─ Part 02:")
+    @btime Day11.part2(input)
 end
 
 
