@@ -1,3 +1,4 @@
+# Read in the input data file, parsing it into a matrix of numbers
 function ingest(path)
     outvectors = open(path) do f
         [collect(line) for line in readlines(f)]
