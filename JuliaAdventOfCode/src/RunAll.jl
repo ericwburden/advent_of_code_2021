@@ -171,3 +171,17 @@ if day == 0 || day == 11
     println("├─ Part 01: $(answer1)")
     println("└─ Part 02: $(answer2)")
 end
+
+
+# Day 12 ----------------------------------------------------------------------
+
+if day == 0 || day == 12
+    inputpath = getinput("Day12", "input")
+    input = Day12.ingest(inputpath)
+    answer1 = Day12.part1(input)
+    answer2 = Day12.part2(input)
+
+    println("\nDay 12")
+    println("├─ Part 01: $(answer1)")
+    println("└─ Part 02: $(answer2)")
+end
