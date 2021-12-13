@@ -5,7 +5,7 @@ getinput(d, fn) = joinpath(inputdirpath, d, "$fn.txt")
 export getinput
 export Day01, Day02, Day03, Day04, Day05, 
        Day06, Day07, Day08, Day09, Day10,
-       Day11, Day12
+       Day11, Day12, Day13
 
 # Include every test file in this folder
 dayfilere = r"Day\d{2}/Day\d{2}.jl$"
