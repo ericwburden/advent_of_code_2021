@@ -1,30 +1,50 @@
+# Some More Useful Structs and Methods -----------------------------------------
+
+# This time, we'll represent the `Path` taken as a struct, keeping track of 
+# which caves have been visited, our current cave, and whether we've already
+# visited a small cave twice.
 struct Path
     visited::BitVector
     current::Cave
     beentwice::Bool
 end
 
+# Constructor for a `Path` , takes the starting cave and an integer indicating
+# the size of the `visited` BitVector. Each `Cave` index corresponds to an index
+# in `visited`. These BitVectors are much cheaper to copy about than a Set{Cave}.
 function Path(C::Cave, I::Int) 
     visited = falses(I)
     visited[C.index] = true
     Path(visited, C, false)
 end
 
-function advanceto(path::Path, cave::Cave)::Union{Path,Nothing}
+# Given a `Path` and a `Cave`, create a new `Path`  by adding the given `Cave` to the
+# end. This function also does the checking to ensure that only `Paths` are
+# returned when the criteria are met, aka, only advance to a small cave if 
+# you've never been there or you've never been to any small cave twice.
+function advanceto(path::Path, cave::SmallCave)::Union{Path,Nothing}
     isstart(cave) && return nothing
-
-    smallandvisited = issmall(cave) && path.visited[cave.index]
-    smallandvisited && path.beentwice && return nothing
+    path.visited[cave.index] && path.beentwice && return nothing
     
     visited = deepcopy(path.visited)
     visited[cave.index] = true
-    return Path(visited, cave, smallandvisited || path.beentwice)
+    beentwice = path.visited[cave.index] || path.beentwice
+    return Path(visited, cave, beentwice)
 end
 
-function countvisited(map::CaveMap)::Int
-    startcave = getstart(map)
-    stack = [Path(startcave, length(map))]
-    sizehint!(stack, length(map)^2)
+function advanceto(path::Path, cave::LargeCave)::Union{Path,Nothing}
+    return Path(path.visited, cave, path.beentwice)
+end
+
+
+# Solve Part Two ---------------------------------------------------------------
+
+# Essentially the same as before. Now we've embedded our logic regarding whether
+# or not we can move to a cave into the `advanceto()` function.
+function part2(input)
+    startcave = getstart(input)
+    stack = [Path(startcave, length(input))]
+    sizehint!(stack, length(input)^2)
     pathcount = 0
 
     while !isempty(stack)
@@ -35,16 +55,11 @@ function countvisited(map::CaveMap)::Int
             continue
         end
 
-        for nextcave in get(map, path.current, [])
+        for nextcave in get(input, path.current, [])
             nextpath = advanceto(path, nextcave)
             isnothing(nextpath) && continue
             push!(stack, nextpath)
         end
     end
     return pathcount
-end
-
-
-function part2(input)
-    return countvisited(input)
 end
