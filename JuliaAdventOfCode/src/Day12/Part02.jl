@@ -14,7 +14,6 @@ end
 # in `visited`. These BitVectors are much cheaper to copy about than a Set{Cave}.
 function Path(C::Cave, I::Int) 
     visited = falses(I)
-    visited[C.index] = true
     Path(visited, C, false)
 end
 
@@ -23,7 +22,7 @@ end
 # returned when the criteria are met, aka, only advance to a small cave if 
 # you've never been there or you've never been to any small cave twice.
 function advanceto(path::Path, cave::SmallCave)::Union{Path,Nothing}
-    isstart(cave) && return nothing
+    cave isa StartCave && return nothing
     path.visited[cave.index] && path.beentwice && return nothing
     
     visited = deepcopy(path.visited)
@@ -34,6 +33,14 @@ end
 
 function advanceto(path::Path, cave::LargeCave)::Union{Path,Nothing}
     return Path(path.visited, cave, path.beentwice)
+end
+
+function advanceto(::Path, cave::EndCave)::Path
+    return Path(BitVector(), cave, false)
+end
+
+function advanceto(::Path, cave::StartCave)::Nothing
+    return nothing
 end
 
 
@@ -50,7 +57,7 @@ function part2(input)
     while !isempty(stack)
         path = pop!(stack)
 
-        if isend(path.current)
+        if path.current isa EndCave
             pathcount += 1
             continue
         end

@@ -1,8 +1,6 @@
 # Some Useful Helper Functions and Types ---------------------------------------
 issmall(C::Cave) = isa(C, SmallCave)
 islarge(C::Cave) = isa(C, LargeCave)
-isstart(C::Cave) = C.name == "start"
-isend(C::Cave) = C.name == "end"
 
 const Visited = Set{Cave}
 const CaveMap = Dict{Cave, Vector{Cave}}
@@ -10,7 +8,7 @@ const ExploreQueue = Vector{Tuple{Visited,Cave}}
 
 function getstart(map::CaveMap)
     for cave in keys(map)
-        isstart(cave) && return cave
+        cave isa StartCave && return cave
     end
     error("Could not find starting cave")
 end
@@ -19,6 +17,7 @@ end
 # cave, we only need to pass back the set of visited Caves.
 nextpath(visited::Visited, ::LargeCave) = visited
 nextpath(visited::Visited, nextcave::SmallCave) = Visited([visited..., nextcave])
+nextpath(::Visited, ::EndCave) = Visited()
 
 
 # Solve Part One ---------------------------------------------------------------
@@ -41,7 +40,7 @@ function part1(input)
 
         # If we've reached the end, just add one to our count of paths
         # and move on to the next item in the stack
-        if isend(cave)
+        if cave isa EndCave
             paths += 1
             continue
         end
@@ -51,7 +50,7 @@ function part1(input)
         for nextcave in get(input, cave, [])
             # If we found the start, or if our next cave is in our list of
             # visited caves, don't go there.
-            isstart(nextcave) && continue
+            nextcave isa StartCave && continue
             nextcave in visitedsofar && continue
 
             # We only need to keep track of the small caves we've visited

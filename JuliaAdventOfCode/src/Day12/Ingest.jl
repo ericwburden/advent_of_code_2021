@@ -5,10 +5,10 @@
 # index of the cave. The indices are used later to determine whether a 
 # cave has already been visited.
 abstract type Cave end
-struct LargeCave <: Cave
-    name::String
-    # index::Int
-end
+
+struct StartCave <: Cave end
+struct EndCave   <: Cave end
+struct LargeCave <: Cave name::String end
 struct SmallCave <: Cave
     name::String
     index::Int
@@ -16,8 +16,13 @@ end
 
 # Given a name and index, produce the appropriate type of Cave depending
 # on whether the name is uppercase or not.
+issmallcave(S) = all(islowercase, S) && S ∉ ["start", "end"]
 Cave(s::AbstractString, idx::Int)::SmallCave = SmallCave(s, idx)
-Cave(s::AbstractString, ::Nothing)::LargeCave = LargeCave(s)
+function Cave(s::AbstractString, ::Nothing)::Cave
+    s == "start" && return StartCave()
+    s == "end"   && return EndCave()
+    return LargeCave(s)
+end
 
 
 # Ingest the Data File ---------------------------------------------------------
@@ -42,10 +47,10 @@ function ingest(path)
         # assigned index for that cave name, just use it, otherwise use one more
         # than the total number of caves already indexed. Only do this if the
         # cave name is all lowercase, a small cave.
-        if all(islowercase, left) && get(indexes, left, 0) == 0
+        if issmallcave(left) && get(indexes, left, 0) == 0
             indexes[left] = length(indexes) + 1
         end
-        if all(islowercase, right) && get(indexes, right, 0) == 0
+        if issmallcave(right) && get(indexes, right, 0) == 0
             indexes[right] = length(indexes) + 1
         end
 
