@@ -4,7 +4,7 @@ islarge(C::Cave) = isa(C, LargeCave)
 
 const Visited = Set{Cave}
 const CaveMap = Dict{Cave, Vector{Cave}}
-const ExploreQueue = Vector{Tuple{Visited,Cave}}
+const ExploreQueue = Vector{Tuple{BitVector,Cave}}
 
 function getstart(map::CaveMap)
     for cave in keys(map)
@@ -14,23 +14,37 @@ function getstart(map::CaveMap)
 end
 
 # We only need to keep track of the small caves. If moving into a large
-# cave, we only need to pass back the set of visited Caves.
-nextpath(visited::Visited, ::LargeCave) = visited
-nextpath(visited::Visited, nextcave::SmallCave) = Visited([visited..., nextcave])
-nextpath(::Visited, ::EndCave) = Visited()
+# cave, we only need to pass back the set of visited Caves. If we're moving
+# into the end cave, then we don't need to know about the visited caves 
+# anymore, we can just use an empty BitVector.
+nextpath(visited::BitVector, ::LargeCave) = visited
+nextpath(::BitVector, ::EndCave) = BitVector()
+function nextpath(visited::BitVector, nextcave::SmallCave) 
+    visited = deepcopy(visited)
+    visited[nextcave.index] = true
+    return visited
+end
+
+# Determines whether we should skip entering a cave. We should always enter a 
+# Large cave (don't skip it) or the end cave, never re-enter the start cave,
+# and only enter a small cave if we've never been inside it before (meaning
+# it's corresponding index in the visited vector will be false).
+shouldskip(::BitVector, ::LargeCave) = false
+shouldskip(::BitVector, ::EndCave) = false
+shouldskip(::BitVector, ::StartCave) = true
+shouldskip(visited::BitVector, cave::SmallCave) = visited[cave.index]
 
 
 # Solve Part One ---------------------------------------------------------------
 
-# Yes, I realize we're not using the `cave.index`, that's for Part Two. For Part
-# One, we'll keep track of which caves we've visited so far in a Set. This was
-# my first approach for Part Two, as well, but it ended up being *painfully*
-# slow (nearly 10 seconds!). This is a pretty standard implementation of a 
-# depth-first search, with a bit of a twist.
+# This is a pretty standard implementation of a depth-first search, with a bit
+# of a twist. Most of the twist is handled by the different helper functions
+# and types implemented above.
 function part1(input)
-    # Start by creating a "stack" and initializing it with the "start" cave
-    startcave = getstart(input)
-    stack = ExploreQueue([(Visited([startcave]), startcave)])
+    # Start by creating a "stack" and initializing it with the "start" cave 
+    # and a BitVector large enough to hold the indices of all the small caves
+    smallcavecount = mapreduce(C -> C isa SmallCave, +, keys(input))
+    stack = ExploreQueue([(falses(smallcavecount), StartCave())])
     paths = 0
 
     # While there are still caves to explore...
@@ -50,8 +64,7 @@ function part1(input)
         for nextcave in get(input, cave, [])
             # If we found the start, or if our next cave is in our list of
             # visited caves, don't go there.
-            nextcave isa StartCave && continue
-            nextcave in visitedsofar && continue
+            shouldskip(visitedsofar, nextcave) && continue
 
             # We only need to keep track of the small caves we've visited
             visited = nextpath(visitedsofar, nextcave)
