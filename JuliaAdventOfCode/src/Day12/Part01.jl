@@ -1,17 +1,9 @@
 # Some Useful Helper Functions and Types ---------------------------------------
-issmall(C::Cave) = isa(C, SmallCave)
-islarge(C::Cave) = isa(C, LargeCave)
 
-const Visited = Set{Cave}
+# Just some handy type aliases for clarity
 const CaveMap = Dict{Cave, Vector{Cave}}
-const ExploreQueue = Vector{Tuple{BitVector,Cave}}
+const ExploreStack = Vector{Tuple{BitVector,Cave}}
 
-function getstart(map::CaveMap)
-    for cave in keys(map)
-        cave isa StartCave && return cave
-    end
-    error("Could not find starting cave")
-end
 
 # We only need to keep track of the small caves. If moving into a large
 # cave, we only need to pass back the set of visited Caves. If we're moving
@@ -44,7 +36,7 @@ function part1(input)
     # Start by creating a "stack" and initializing it with the "start" cave 
     # and a BitVector large enough to hold the indices of all the small caves
     smallcavecount = mapreduce(C -> C isa SmallCave, +, keys(input))
-    stack = ExploreQueue([(falses(smallcavecount), StartCave())])
+    stack = ExploreStack([(falses(smallcavecount), StartCave())])
     paths = 0
 
     # While there are still caves to explore...
