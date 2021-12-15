@@ -1,9 +1,9 @@
 # Some Useful Data Structures -------------------------------------------------
 
-# Yes, there are two types of caves. Large ones and small ones. Yes, they 
-# have the same fields. Sue me. Each cave indicates the size, name, and 
-# index of the cave. The indices are used later to determine whether a 
-# cave has already been visited.
+# Yes, there are four types of caves. Large caves, small caves, start caves, and
+# end caves. Yes, they have different fields. Sue me. Each cave indicates the size, 
+# name, and index of the cave, if it's important for that type of cave. The 
+# indices are used later to determine whether a cave has already been visited.
 abstract type Cave end
 
 struct StartCave <: Cave end
