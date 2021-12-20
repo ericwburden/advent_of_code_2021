@@ -269,3 +269,18 @@ if day == 0 || day == 18
     println("├─ Part 01: $(answer1)")
     println("└─ Part 02: $(answer2)")
 end
+
+
+# Day 19 ----------------------------------------------------------------------
+
+if day == 0 || day == 19
+    inputpath = getinput("Day19", "input")
+    input = Day19.ingest(inputpath)
+    (mapped, offsets) = Day19.mapscanners(input)
+    answer1 = Day19.part1(mapped)
+    answer2 = Day19.part2(offsets)
+
+    println("\nDay 19")
+    println("├─ Part 01: $(answer1)")
+    println("└─ Part 02: $(answer2)")
+end

@@ -338,6 +338,25 @@ if day == 0 || day == 18
 end
 
 
+# Day 19 ----------------------------------------------------------------------
+
+if day == 0 || day == 19
+    inputpath = getinput("Day19", "input")
+    input = Day19.ingest(inputpath)
+
+    println("\nDay 19:")
+
+    print("├─ Building Input:")
+    (mapped, offsets) = @btime Day19.mapscanners(input)
+
+    print("├─ Part 01:")
+    @btime Day19.part1(mapped)
+
+    print("└─ Part 02:")
+    @btime Day19.part2(offsets)
+end
+
+
 # End -------------------------------------------------------------------------
 
 println()
