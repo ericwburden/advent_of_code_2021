@@ -357,6 +357,22 @@ if day == 0 || day == 19
 end
 
 
+# Day 20 ----------------------------------------------------------------------
+
+if day == 0 || day == 20
+    inputpath = getinput("Day20", "input")
+    input = Day20.ingest(inputpath)
+
+    println("\nDay 20:")
+
+    print("├─ Part 01:")
+    @btime Day20.solve(input, 2)
+
+    print("└─ Part 02:")
+    @btime Day20.solve(input, 50)
+end
+
+
 # End -------------------------------------------------------------------------
 
 println()
