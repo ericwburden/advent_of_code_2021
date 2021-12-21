@@ -1,93 +1,192 @@
-# Some Useful Data Structures --------------------------------------------------
-
-
-
-# Helper Functions -------------------------------------------------------------
-function Base.:+(a::SnailfishValue, b::SnailfishValue)
-    return SnailfishValue(a.value + b.value, a.depth)
-end
-
-function Base.:+(a::SnailfishNumber, b::SnailfishNumber)
-    result = [a..., b...]
-    for sfv in result
-        sfv.depth += 1
-    end
-    reduce!(result)
-    return result
-end
-
-function isreduced(sfn::SnailfishNumber)
-    for sfv in sfn
-        (sfv.depth > 4 || sfv.value > 9) && return false
-    end
-    return true
-end
-
-function explode!(sfn::SnailfishNumber)
-    explodeat = findfirst(sfv -> sfv.depth > 4, sfn)
-    isnothing(explodeat) && return false
-
-	(left, right) = sfn[explodeat:explodeat+1]
-	if checkbounds(Bool, sfn, explodeat-1); sfn[explodeat-1] += left;  end
-	if checkbounds(Bool, sfn, explodeat+2); sfn[explodeat+2] += right; end
-	sfn[explodeat] = SnailfishValue(0, 4)
-    deleteat!(sfn, explodeat + 1)
-    return true
-end
+# Helper Functions =============================================================
 
 splitleft(value)::Int = floor(value / 2)
 splitright(value)::Int = ceil(value / 2)
 splitvalue(value) = (splitleft(value), splitright(value))
 
-function split!(sfn::SnailfishNumber)
-    splitat = findfirst(sfv -> sfv.value >= 10, sfn)
-    isnothing(splitat) && return false
 
-    sfv = sfn[splitat]
-    (left, right) = splitvalue(sfv.value)
-    depth = sfv.depth + 1
-    sfn[splitat] = SnailfishValue(left, depth)
-    insert!(sfn, splitat+1, SnailfishValue(right, depth))
-    return true
+# Binary Tree Functions ========================================================
+
+# Leaf -------------------------------------------------------------------------
+
+function add!(a::Leaf, b::Leaf) 
+	a.value += b.value
 end
-
-function reduce!(sfn::SnailfishNumber)
-    while !isreduced(sfn)
-        while explode!(sfn); end
-        split!(sfn)
-    end
-end
-
-function magnitude!(sfn::SnailfishNumber)
-    iters = 0
-    while length(sfn) > 1
-        for idx in 2:length(sfn)
-            (left, right) = sfn[idx-1:idx]            
-            if left.depth == right.depth
-                newvalue = (left.value*3) + (right.value*2)
-                sfn[idx-1] = SnailfishValue(newvalue, left.depth - 1)
-                sfn[idx] = SnailfishValue(0, -1)
-            end
-        end
-        filter!(sfv -> sfv.depth >= 0, sfn)
-        iters += 1
-        iters > 100 && return -1
-        # TODO: Currently just gives up after 100 iterations. This is because
-        # sometimes the rightmost node of the left branch and the leftmost node
-        # of the right branch can have the same depth, and this algorithm
-        # doesn't account for the branching at all. So, it can get stuck in a 
-        # state where it can't reduce the magnitude any further. Thankfully, 
-        # this *doesn't* happen for the inputs that lead to the actual answer, 
-        # but this was by no means guaranteed.
-    end
-    return sfn[1].value
+function add!(a::Leaf, b::Int64) 
+	a.value += b
 end
 
 
-# Solve Part One ---------------------------------------------------------------
+# Node (Leaf/Branch) -----------------------------------------------------------
+
+function traverse(node::Node, depth = 0)
+	if node isa Leaf
+		println("($(node.value), $depth)")
+		return nothing
+	end
+	traverse(node.left, depth + 1)
+	traverse(node.right, depth + 1)
+end
+
+function firstleaf(node::Node)
+	node isa Leaf && return node
+	return firstleaf(node.left)
+end
+
+function lastleaf(node::Node)
+	node isa Leaf && return node
+	return lastleaf(node.right)
+end
+
+function previousleaf(node::Node)
+	# If we hit the root node, there is no previous leaf
+	isnothing(node.parent) && return nothing
+
+	if node.parent.left == node
+		# If this is the left node, travel up the tree one level and check for
+		# a previous value starting at the parent node.
+		return previousleaf(node.parent)
+	else
+		# If it's not the left node, then start searching for the rightmost
+		# leaf starting with this node's left sibling.
+		return lastleaf(node.parent.left)
+	end
+end
+
+function nextleaf(node::Node)
+	# If we hit the root node, there is no previous leaf
+	isnothing(node.parent) && return nothing
+
+	if node.parent.right == node
+		# If this is the right node, travel up the tree one level and check for 
+		# a next value starting at the parent node.
+		return nextleaf(node.parent)
+	else
+		# If it's not the right node, then start searching for the leftmost
+		# leaf starting with this node's right sibling
+		return firstleaf(node.parent.right)
+	end
+end
+
+# Find the first node with a depth equal to 4
+function explosivenode(node::Node, depth = 0)
+	node isa Leaf && return nothing
+	depth == 4 && return node
+	left = explosivenode(node.left, depth + 1)
+	isnothing(left) && return explosivenode(node.right, depth + 1)
+	return left
+end
+
+function explode!(node::Node)
+	(parent, left, right) = (node.parent, node.left.value, node.right.value)
+
+	previous = previousleaf(node)
+	if !isnothing(previous)
+		add!(previous, left)
+	end
+
+	next = nextleaf(node)
+	if !isnothing(next)
+		add!(next, right)
+	end
+
+	if parent.left == node
+		parent.left = Leaf(parent, 0)
+	else
+		parent.right = Leaf(parent, 0)
+	end
+end
+
+function splitnode(node::Node)
+	if node isa Leaf 
+		node.value > 9 && return node
+		return nothing
+	end
+
+
+	left = splitnode(node.left)
+	left isa Leaf && return left
+
+	right = splitnode(node.right)
+	right isa Leaf && return right
+	
+	return nothing
+end
+
+function split!(leaf::Leaf)
+	(leftval, rightval) = splitvalue(leaf.value)
+	splitnode = Branch(leaf.parent)
+	splitnode.left  = Leaf(splitnode, leftval)
+	splitnode.right = Leaf(splitnode, rightval)
+
+	if leaf.parent.left == leaf
+		leaf.parent.left = splitnode
+	else
+		leaf.parent.right = splitnode
+	end
+end
+
+function magnitude(node::Node)
+	node isa Leaf && return node.value
+	left = magnitude(node.left) * 3
+	right = magnitude(node.right) * 2
+	return left + right
+end
+
+
+# Tree -------------------------------------------------------------------------
+
+function combine(a::Tree, b::Tree)
+	root = Branch(nothing)
+	
+	root.left = a.root
+	root.left.parent = root
+
+	root.right = b.root
+	root.right.parent = root
+
+	return Tree(root)
+end
+
+function Base.:+(a::Tree, b::Tree)
+	tree = combine(a, b)
+	simplify!(tree)
+	return tree
+end
+
+traverse(tree::Tree) = traverse(tree.root)
+
+# If there is a pair of values nested 4 or more deep, explode that pair and
+# return true. Otherwise, return false.
+function explode!(tree::Tree)
+	explosive = explosivenode(tree.root)
+	isnothing(explosive) && return false
+	explode!(explosive)
+	return true
+end
+
+function split!(tree::Tree)
+	splitat = splitnode(tree.root)
+	isnothing(splitat) && return false
+	split!(splitat)
+	return true
+end
+
+function simplify!(tree::Tree)
+	while true
+		explode!(tree) && continue
+		split!(tree)   && continue
+		break
+	end
+end
+
+magnitude(tree::Tree) = magnitude(tree.root)
+
+
+# Solve Part One ===============================================================
 
 function part1(input)
     input = deepcopy(input)
-    finalnumber = reduce(+, input)
-    return magnitude!(finalnumber)
+    finalnumber = sum(input)
+    return magnitude(finalnumber)
 end
