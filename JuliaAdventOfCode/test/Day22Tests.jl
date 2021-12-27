@@ -1,4 +1,4 @@
-using JuliaAdventOfCode: getinput, Day21
+using JuliaAdventOfCode: getinput, Day22
 
 @testset "Day22 Tests" begin
     testinputpath = getinput("Day22", "test1")
