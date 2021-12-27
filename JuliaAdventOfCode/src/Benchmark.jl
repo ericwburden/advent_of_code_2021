@@ -422,6 +422,23 @@ if day == 0 || day == 23
 end
 
 
+# Day 24 ----------------------------------------------------------------------
+
+if day == 0 || day == 24
+    (answer1, answer2) = Day24.solve()
+
+    println("\nDay 24:")
+
+    print("├─ Benchmarking answer confirmation...")
+
+    print("├─ Part 01:")
+    @btime Day24.isvalid(answer1)
+
+    print("└─ Part 02:")
+    @btime Day24.isvalid(answer2)
+end
+
+
 # End -------------------------------------------------------------------------
 
 println()

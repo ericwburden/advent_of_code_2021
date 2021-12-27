@@ -342,3 +342,14 @@ if day == 0 || day == 23
     println("├─ Part 01: $(answer1)")
     println("└─ Part 02: $(answer2)")
 end
+
+
+# Day 24 ----------------------------------------------------------------------
+
+if day == 0 || day == 24
+    (answer1, answer2) = Day24.solve()
+
+    println("\nDay 24")
+    println("├─ Part 01: $(answer1)")
+    println("└─ Part 02: $(answer2)")
+end
