@@ -439,6 +439,19 @@ if day == 0 || day == 24
 end
 
 
+# Day 25 ----------------------------------------------------------------------
+
+if day == 0 || day == 25
+    inputpath = getinput("Day25", "input")
+    input = Day25.ingest(inputpath)
+
+    println("\nDay 25:")
+
+    print("└─ Part 01:")
+    @btime Day25.part1(input)
+end
+
+
 # End -------------------------------------------------------------------------
 
 println()
