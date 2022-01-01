@@ -1,6 +1,7 @@
 # Helper Functions -------------------------------------------------------------
 
-# Break apart a `Cube` into its coordinates
+# It is often convenient to get the upper and lower bounds of the 
+# x, y, and z-ranges that comprise a `Cube`
 function bounds(cube::Cube)
     (x1, x2) = (cube.x.start, cube.x.stop)
     (y1, y2) = (cube.y.start, cube.y.stop)
@@ -43,7 +44,9 @@ end
 # Solve Part One ---------------------------------------------------------------
 
 # Simple, straightforward; represent the target region as a 3D `BitArray` and 
-# turn on/off the lights according to the instructions, in order.
+# turn on/off the lights according to the instructions, in order. We use 
+# `displace()` to adjust the coordinates of each `Cube` so that its bounds fall
+# within the bounds of `lignts`.
 function part1(input)
     lights = falses(101, 101, 101)
     foreach(cube -> apply!(lights, cube), input)
