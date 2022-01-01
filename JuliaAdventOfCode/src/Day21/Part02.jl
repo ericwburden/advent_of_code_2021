@@ -1,10 +1,16 @@
 # Constants --------------------------------------------------------------------
 
+# Of the 27 alternate realities created by three rolls of the 'Dirac Die', we
+# already know in how many of those universes we rolled a total of `3` (1), a 
+# total of `4` (3), and so on. Since these proportions don't change, we can
+# define a constant.
 const FREQUENCIES = Dict(3 => 1, 4 => 3, 5 => 6, 6 => 7, 7 => 6, 8 => 3, 9 => 1)
 
 
 # Data Structures --------------------------------------------------------------
 
+# Just a type alias for a Dict to keep track of the number of universes that
+# current exist for each found game state.
 const GameFreqMap = Dict{Game,Int64}
 
 
@@ -52,6 +58,9 @@ end
 
 # Solve Part Two ---------------------------------------------------------------
 
+# Play the game, roll the crazy die, move the player, repeat until all the games
+# have played themselves out. Each time a player wins a game (or more) in one of 
+# the alternate realities, add it (them) to the ongoing sum.
 function part2(input)
     games = GameFreqMap(input => 1)
     victoryarray = [0, 0]
@@ -68,5 +77,4 @@ function part2(input)
     end
 
     return maximum(victoryarray)
-
 end
