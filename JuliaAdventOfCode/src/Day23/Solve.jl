@@ -32,14 +32,17 @@ struct Room{T} <: Location
 end
 Room(T, idx) = Room(T, idx, nothing)
 
+
 # The burrow is represented by a statically sized Tuple of `Location`s
 struct Burrow{N}
     locations::NTuple{N, Location}
 end
+Burrow(L...) = Burrow(L)
 
 Base.getindex(burrow::Burrow, idx::Int64) = burrow.locations[idx]
 Base.isempty(location::Location)          = isnothing(location.occupant)
 Base.length(burrow::Burrow)               = length(burrow.locations)
+matches(room::Room)                       = room.occupant isa room.amphitype
 
 
 #= Movement Rules --------------------------------------------------------------
@@ -47,7 +50,22 @@ Base.length(burrow::Burrow)               = length(burrow.locations)
 | one space to another with the following functions...
 =#
 
+# Get the index of the hallway space that leads into a `Room`.
 doorway(room::Room) = DOORWAYS[typeof(room)]
+
+# Iterate over all the rooms of the same type following the `Room` in `RoomIter`
+# Note that every Tuple is already an iterator over its contents, but because
+# We're implementing `iterate()` for a _more specific_ type of Tuple, this 
+# method will be preferred for iterating over `RoomIter` Tuples.
+const RoomIter = Tuple{Room,Burrow}
+function Base.iterate(iter::RoomIter, idx::Int = 0)
+    (room, burrow) = iter
+    doorwayidx     = doorway(room)
+    roomidx        = idx > 0 ? idx : doorwayidx + room.idx + 1
+    nextroom       = burrow[roomidx]
+    nextroom isa typeof(room) || return nothing
+    return (nextroom, roomidx + 1)
+end
 
 # It is illegal to move from one hallway space to another hallway space
 canmove(::Hallway, ::Hallway, ::Burrow) = false
@@ -55,55 +73,39 @@ canmove(::Hallway, ::Hallway, ::Burrow) = false
 # An amphipod will only leave their room if they do not match the room OR
 # they are between the hallway and another amphipod who does not match the room
 function canmove(room::Room, ::Hallway, burrow::Burrow) 
-    # Can leave the room if the amphipod doesn't match the room type...
-    room.occupant isa room.amphitype || return true
-    
-    # ...but if it does and it's in the last space, it's going to stay
-    room.idx == 4 && return false
+    # Can leave the room if the amphipod doesn't match the room type.
+    matches(room) || return true
 
     # Can move from the first space in the room to the hallway if...
     # - the amphipod type does not match the room type (already checked)
     # - an amphipod in a later space does not match the room type
-    doorwayidx = doorway(room)
-    roomidx = doorwayidx + room.idx + 1
-    while burrow[roomidx] isa typeof(room)
-        nextroom = burrow[roomidx]
-        occupant = nextroom.occupant
-        occupant isa room.amphitype || return true
-        roomidx += 1
+    for nextroom in (room, burrow)
+        matches(nextroom) || return true
     end
 
     # If all the following room spaces are filled with the right kind of
-    # amphipod, then stay put
+    # amphipod (or `room` is the last space in the Room), then stay put
     return false
 end
 
 # There are multiple rules associated with moving from a hallway space into 
 # a room...
 function canmove(hallway::Hallway, room::Room, burrow::Burrow)
-    # Can't move into either of the room spaces if the amphipod type doesn't
-    # match the type of room...
+    # Can't move into any of the room spaces if the amphipod type doesn't
+    # match the type of room.
     hallway.occupant isa room.amphitype || return false
-
-    # ...which is the only requirement for the last space in the room
-    room.idx == 4 && return true
 
     # Can move from the hallway into the first `Room` space if...
     # - the amphipod type matches the room type (already checked)
     # - all the later spaces are occupied by an amphipod of the
     # appropriate type
-    doorwayidx = doorway(room)
-    roomidx = doorwayidx + room.idx + 1
-    while burrow[roomidx] isa typeof(room)
-        nextroom = burrow[roomidx]
-        occupant = nextroom.occupant
-        isnothing(occupant)         && return false
-        occupant isa room.amphitype || return false
-        roomidx += 1
+    for nextroom in (room, burrow)
+        matches(nextroom) || return false
     end
 
     # If all the following room spaces are filled with the right kind of
-    # amphipod, then `amphipod` can move into the room space
+    # amphipod (or `room` is the last space in the Room), then `amphipod` 
+    # can move into the room space
     return true
 end
 
@@ -112,23 +114,15 @@ function canmove(room1::Room, room2::Room, burrow::Burrow)
     # Can't move from one space to another in the same room
     typeof(room1) == typeof(room2) && return false
 
-    # Can't move from one room to another if the amphipod matches the 
-    # starting room
+    # In order to move from one room to another, the amphipod must *not* match
+    # the room it is in and it *must* match the room it is moving to
     room1.occupant isa room1.amphitype && return false
-
-    # Can't move into a room that the amphipod doesn't match
     room1.occupant isa room2.amphitype || return false
 
     # Can't move into a room space if any of the following spaces are empty
     # or occupied by the wrong kind of amphipod
-    doorwayidx = doorway(room2)
-    roomidx = doorwayidx + room2.idx + 1
-    while burrow[roomidx] isa typeof(room2)
-        nextroom = burrow[roomidx]
-        occupant = nextroom.occupant
-        isnothing(occupant)          && return false
-        occupant isa room2.amphitype || return false
-        roomidx += 1
+    for nextroom in (room2, burrow)
+        matches(nextroom) || return false
     end
 
     return true
@@ -138,7 +132,9 @@ end
 #= Swapping --------------------------------------------------------------------
 | The following functions enable swapping the occupants at two locations in the
 | burrow. Since the `Burrow` is immutable, this involves creating a new `Burrow`
-| by iteration, while making the change.
+| by iteration, while making the change. It would be easier to just use a 
+| mutable `Burrow`, but I'm hoping that the immutable struct can be passed on
+| the stack instead of the heap.
 =#
 
 # Given a room and a possible Amphipod, return a version of that room occupied
@@ -249,10 +245,12 @@ function nextburrows(burrow::Burrow)
     return burrows
 end
 
+# Check all the `Room` spaces. If all of them hold a matching amphipod, then
+# we've found the ideal `Burrow` state
 function isdone(burrow::Burrow)
     for location in burrow.locations
         location isa Hallway && continue
-        location.occupant isa location.amphitype || return false
+        matches(location)    || return false
     end
     return true
 end

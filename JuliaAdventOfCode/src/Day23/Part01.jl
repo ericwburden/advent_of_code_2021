@@ -11,7 +11,7 @@ include("Solve.jl")
 |   #A#D#C#A#
 |   #########
 =#
-const TESTBURROW = Burrow((
+const TESTBURROW = Burrow(
     Hallway(1),
     Hallway(2),                Hallway(3),
     Room(Amber, 1,  Bronze()), Room(Amber, 2,  Amber()),
@@ -22,7 +22,7 @@ const TESTBURROW = Burrow((
     Hallway(8),                Hallway(9),
     Room(Desert, 1, Desert()), Room(Desert, 2, Amber()),
     Hallway(10),               Hallway(11)
-))
+)
 
 #= Real input burrow state
 | #############
@@ -31,7 +31,7 @@ const TESTBURROW = Burrow((
 |   #A#D#C#A#
 |   #########
 =#
-const REALBURROW = Burrow((
+const REALBURROW = Burrow(
     Hallway(1),
     Hallway(2),                Hallway(3),
     Room(Amber, 1,  Desert()), Room(Amber, 2,  Bronze()),
@@ -42,7 +42,7 @@ const REALBURROW = Burrow((
     Hallway(8),                Hallway(9),
     Room(Desert, 1, Copper()), Room(Desert, 2, Copper()),
     Hallway(10),               Hallway(11)
-))
+)
 
 # Each index in `NEIGHBORS` contains a vector of the indices that can be reached
 # from a given index in `Burrow.locations`, given the standard configuration
