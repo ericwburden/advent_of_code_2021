@@ -331,12 +331,8 @@ end
 # Day 23 ----------------------------------------------------------------------
 
 if day == 0 || day == 23
-    inputpath = getinput("Day23", "input")
-    input1 = Day23.Part1.ingest(inputpath)
-    answer1 = Day23.Part1.part1(input1)
-
-    input2 = Day23.Part2.ingest(inputpath)
-    answer2 = Day23.Part2.part2(input2)
+    answer1 = Day23.Part1.part1()
+    answer2 = Day23.Part2.part2()
 
     println("\nDay 23")
     println("├─ Part 01: $(answer1)")

@@ -408,17 +408,14 @@ end
 # Day 23 ----------------------------------------------------------------------
 
 if day == 0 || day == 23
-    inputpath = getinput("Day23", "input")
 
     println("\nDay 23:")
 
     print("├─ Part 01:")
-    input1 = Day23.Part1.ingest(inputpath)
-    @btime Day23.Part1.part1(input1)
+    @btime Day23.Part1.part1()
 
     print("└─ Part 02:")
-    input2 = Day23.Part2.ingest(inputpath)
-    @btime Day23.Part2.part2(input2)
+    @btime Day23.Part2.part2()
 end
 
 
