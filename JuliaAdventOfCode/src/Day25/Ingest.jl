@@ -3,6 +3,9 @@
 
 # Ingest the Data -------------------------------------------------------------
 
+# No fancy data structures this time, just two `BitMatrix`, one representing the
+# locations of east-bound cucumbers, and one representing the locations of
+# sounth-bound cucumbers, on a 2D grid.
 function ingest(path)
     eastlines = []
     southlines = []
