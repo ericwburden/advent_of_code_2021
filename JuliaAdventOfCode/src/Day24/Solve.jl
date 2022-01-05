@@ -8,6 +8,7 @@
 # *needed* to solve this day's puzzle. You can see where I've worked out the
 # answers to my input in the comments below.
 
+#(optype, correction, offset)
 const PARAMS = [
     ( 1,  13,  0),  # d[1]  +  0 -  1 == d[14] -> d[1] -  1 == d[14] // 9  // 2
     ( 1,  11,  3),  # d[2]  +  3 -  9 == d[13] -> d[2] -  6 == d[13] // 9  // 7
