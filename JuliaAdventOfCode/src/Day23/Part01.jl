@@ -64,6 +64,9 @@ const DOORWAYS = Dict(
     Room{Copper} => 11, Room{Desert} => 15
 )
 
+# Target room depth for estimating remaining distance
+const ROOMDEPTH = 1.5
+
 # Solve Part One ---------------------------------------------------------------
 
 part1(test = false) = test ? solve(TESTBURROW) : solve(REALBURROW)
