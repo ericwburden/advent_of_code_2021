@@ -217,7 +217,14 @@ function nextmoves(burrow::Burrow, idx::Int64)
             # Don't keep any moves that would stop in a doorway.
             neighbor ∈ values(DOORWAYS) && continue
             canmove(burrow[idx], burrow[neighbor], burrow) || continue
-            push!(moves, (nextcost, neighbor))
+
+            # If the amphipod can move into a room that it matches, then none of
+            # the other possible moves matter.
+            if burrow[neighbor] isa Room 
+                return [(nextcost, neighbor)]
+            else
+                push!(moves, (nextcost, neighbor))
+            end
         end
         push!(visited, current)
     end
